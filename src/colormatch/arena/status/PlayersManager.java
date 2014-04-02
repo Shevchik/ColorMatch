@@ -38,7 +38,7 @@ public class PlayersManager {
 	public Set<String> getPlayersNamesInArena() {
 		return new HashSet<String>(players);
 	}
-	
+
 	public Set<Player> getPlayersInArena() {
 		HashSet<Player> playersset = new HashSet<Player>();
 		for (String playername : players) {

@@ -50,7 +50,7 @@ public class Arena {
 	public StatusManager getStatusManager() {
 		return statusManager;
 	}
-	
+
 	private PlayerHandler playerHandler = new PlayerHandler(this);
 	public PlayerHandler getPlayerHandler() {
 		return playerHandler;

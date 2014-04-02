@@ -64,5 +64,5 @@ public class GameCommands implements CommandExecutor {
 		}
 		return false;
 	}
-	
+
 }
