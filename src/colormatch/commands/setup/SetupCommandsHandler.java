@@ -26,6 +26,14 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+import colormatch.commands.setup.arena.CreateArena;
+import colormatch.commands.setup.arena.DeleteArena;
+import colormatch.commands.setup.arena.DisableArena;
+import colormatch.commands.setup.arena.EnableArena;
+import colormatch.commands.setup.arena.FinishArena;
+import colormatch.commands.setup.arena.SetGameLevel;
+import colormatch.commands.setup.arena.SetMaxPlayers;
+import colormatch.commands.setup.arena.SetMinPlayers;
 import colormatch.core.ColorMatch;
 
 public class SetupCommandsHandler implements CommandExecutor {
@@ -33,15 +41,14 @@ public class SetupCommandsHandler implements CommandExecutor {
 	private HashMap<String, CommandHandlerInterface> commandHandlers = new HashMap<String, CommandHandlerInterface>();
 
 	public SetupCommandsHandler(ColorMatch plugin) {
-		//commandHandlers.put("deletelobby", new DeleteArena(plugin));
-		//commandHandlers.put("create", new CreateArena(plugin));
-		//commandHandlers.put("delete", new DeleteArena(plugin));
-		//commandHandlers.put("setgamelevel", new SetGameLevel(plugin, plselection));
-		//commandHandlers.put("setmaxplayers", new SetMaxPlayers(plugin));
-		//commandHandlers.put("setminplayers", new SetMinPlayers(plugin));
-		//commandHandlers.put("finish", new FinishArena(plugin));
-		//commandHandlers.put("disable", new DisableArena(plugin));
-		//commandHandlers.put("enable", new EnableArena(plugin));
+		commandHandlers.put("create", new CreateArena(plugin));
+		commandHandlers.put("delete", new DeleteArena(plugin));
+		commandHandlers.put("setgamelevel", new SetGameLevel(plugin));
+		commandHandlers.put("setmaxplayers", new SetMaxPlayers(plugin));
+		commandHandlers.put("setminplayers", new SetMinPlayers(plugin));
+		commandHandlers.put("finish", new FinishArena(plugin));
+		commandHandlers.put("disable", new DisableArena(plugin));
+		commandHandlers.put("enable", new EnableArena(plugin));
 	}
 
 	@Override
