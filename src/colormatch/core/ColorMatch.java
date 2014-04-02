@@ -5,12 +5,18 @@ import java.io.File;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import colormatch.arena.Arena;
+import colormatch.datahandler.ArenasManager;
+import colormatch.datahandler.PlayerDataStore;
 
 public class ColorMatch extends JavaPlugin {
 
+	public PlayerDataStore pdata;
+	public ArenasManager amanager;
+
 	@Override
 	public void onEnable() {
-		// load arenas
+		pdata = new PlayerDataStore();
+		amanager = new ArenasManager();
 		final File arenasfolder = new File(this.getDataFolder() + File.separator + "arenas");
 		arenasfolder.mkdirs();
 		final ColorMatch instance = this;
@@ -32,7 +38,12 @@ public class ColorMatch extends JavaPlugin {
 
 	@Override
 	public void onDisable() {
-		
+		for (Arena arena : amanager.getArenas()) {
+			arena.getStatusManager().disableArena();
+			arena.getStructureManager().saveToConfig();
+		}
+		amanager = null;
+		pdata = null;
 	}
 
 }
