@@ -32,7 +32,7 @@ public class Arena {
 
 	public Arena(String name, ColorMatch plugin) {
 		this.name = name;
-		this.arenafile = new File(plugin.getDataFolder(), name+".yml");
+		this.arenafile = new File(plugin.getDataFolder() + File.separator + "arenas" + File.separator + name+".yml");
 		this.plugin = plugin;
 	}
 

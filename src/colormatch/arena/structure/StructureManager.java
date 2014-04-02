@@ -40,10 +40,16 @@ public class StructureManager {
 	public int getMinPlayers() {
 		return minPlayers;
 	}
+	public void setMinPlayers(int minplayers) {
+		this.minPlayers = minplayers;
+	}
 
 	private int maxPlayers = 6;
 	public int getMaxPlayers() {
 		return maxPlayers;
+	}	
+	public void setMaxPlayers(int maxplayers) {
+		this.maxPlayers = maxplayers;
 	}
 
 	public String isArenaConfiguredString() {
