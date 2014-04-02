@@ -23,6 +23,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import colormatch.arena.Arena;
 import colormatch.commands.game.GameCommands;
+import colormatch.commands.setup.SetupCommandsHandler;
 import colormatch.datahandler.ArenasManager;
 import colormatch.datahandler.PlayerDataStore;
 import colormatch.eventhandler.PlayerLeaveArenaChecker;
@@ -40,6 +41,7 @@ public class ColorMatch extends JavaPlugin {
 		pdata = new PlayerDataStore();
 		amanager = new ArenasManager();
 		getCommand("colormatch").setExecutor(new GameCommands(this));
+		getCommand("colormatchsetup").setExecutor(new SetupCommandsHandler(this));
 		getServer().getPluginManager().registerEvents(new PlayerStatusHandler(this), this);
 		getServer().getPluginManager().registerEvents(new RestrictionHandler(this), this);
 		getServer().getPluginManager().registerEvents(new PlayerLeaveArenaChecker(this), this);
