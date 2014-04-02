@@ -8,6 +8,10 @@ import colormatch.arena.Arena;
 import colormatch.commands.game.GameCommands;
 import colormatch.datahandler.ArenasManager;
 import colormatch.datahandler.PlayerDataStore;
+import colormatch.eventhandler.PlayerLeaveArenaChecker;
+import colormatch.eventhandler.PlayerStatusHandler;
+import colormatch.eventhandler.RestrictionHandler;
+import colormatch.eventhandler.WorldUnloadHandler;
 
 public class ColorMatch extends JavaPlugin {
 
@@ -19,6 +23,10 @@ public class ColorMatch extends JavaPlugin {
 		pdata = new PlayerDataStore();
 		amanager = new ArenasManager();
 		getCommand("colormatch").setExecutor(new GameCommands(this));
+		getServer().getPluginManager().registerEvents(new PlayerStatusHandler(this), this);
+		getServer().getPluginManager().registerEvents(new RestrictionHandler(this), this);
+		getServer().getPluginManager().registerEvents(new PlayerLeaveArenaChecker(this), this);
+		getServer().getPluginManager().registerEvents(new WorldUnloadHandler(this), this);
 		final File arenasfolder = new File(this.getDataFolder() + File.separator + "arenas");
 		arenasfolder.mkdirs();
 		final ColorMatch instance = this;
