@@ -5,6 +5,7 @@ import java.io.File;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import colormatch.arena.Arena;
+import colormatch.commands.game.GameCommands;
 import colormatch.datahandler.ArenasManager;
 import colormatch.datahandler.PlayerDataStore;
 
@@ -17,6 +18,7 @@ public class ColorMatch extends JavaPlugin {
 	public void onEnable() {
 		pdata = new PlayerDataStore();
 		amanager = new ArenasManager();
+		getCommand("colormatch").setExecutor(new GameCommands(this));
 		final File arenasfolder = new File(this.getDataFolder() + File.separator + "arenas");
 		arenasfolder.mkdirs();
 		final ColorMatch instance = this;
