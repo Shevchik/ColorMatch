@@ -56,6 +56,7 @@ public class ColorMatch extends JavaPlugin {
 						Arena arena = new Arena(file.substring(0, file.length() - 4), instance);
 						arena.getStructureManager().loadFromConfig();
 						arena.getStatusManager().enableArena();
+						amanager.registerArena(arena);
 					};
 				}
 			},
