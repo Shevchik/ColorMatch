@@ -12,16 +12,24 @@ public class StatusManager {
 	private boolean enabled = false;
 	private boolean starting = false;
 	private boolean running = false;
-	
+
 	public boolean isArenaEnabled() {
 		return enabled;
 	}
 
 	public boolean enableArena() {
+		if (arena.getStructureManager().isArenaConfigured()) {
+			enabled = true;
+			return true;
+		}
 		return false;
 	}
 
 	public void disableArena() {
+		enabled = false;
+		if (arena.getStructureManager().getGameLevel().getSpawnPoint() != null) {
+			arena.getStructureManager().getGameLevel().regen();
+		}
 	}
 
 	public boolean isArenaStarting() {
