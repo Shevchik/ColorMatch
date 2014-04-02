@@ -1,24 +1,19 @@
 package colormatch.arena.handlers;
 
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
 
 import colormatch.arena.Arena;
-import colormatch.core.ColorMatch;
 
 public class PlayerHandler {
-	
-	private ColorMatch plugin;
+
 	private Arena arena;
 
-	public PlayerHandler(ColorMatch plugin, Arena arena) {
-		this.plugin = plugin;
+	public PlayerHandler(Arena arena) {
 		this.arena = arena;
 	}
 
-	// check if player can join the arena
 	public boolean checkJoin(Player player) {
 		if (arena.getStructureManager().getGameLevel().getWorld() == null) {
 			player.sendMessage("Arena world is unloaded, can't join arena");
@@ -43,56 +38,50 @@ public class PlayerHandler {
 		return true;
 	}
 
-	// spawn player on arena
 	@SuppressWarnings("deprecation")
 	public void spawnPlayer(final Player player, String msgtoplayer, String msgtoarenaplayers) {
-		// change player status
-		plugin.pdata.storePlayerGameMode(player);
+		arena.plugin.pdata.storePlayerGameMode(player);
 		player.setFlying(false);
 		player.setAllowFlight(false);
-		plugin.pdata.storePlayerInventory(player);
-		plugin.pdata.storePlayerArmor(player);
-		plugin.pdata.storePlayerPotionEffects(player);
-		plugin.pdata.storePlayerHunger(player);
-		// teleport player to arena
-		plugin.pdata.storePlayerLocation(player);
+		arena.plugin.pdata.storePlayerInventory(player);
+		arena.plugin.pdata.storePlayerArmor(player);
+		arena.plugin.pdata.storePlayerPotionEffects(player);
+		arena.plugin.pdata.storePlayerHunger(player);
+		arena.plugin.pdata.storePlayerLocation(player);
 		Vector s = arena.getStructureManager().getGameLevel().getSpawnPoint();
 		player.teleport(new Location(arena.getStructureManager().getGameLevel().getWorld(), s.getX(), s.getY(), s.getZ()));
-		// update inventory
 		player.updateInventory();
-		// send message to player
-		player.sendMessage("You have joined the arena");
-		// send message to other players and update bar
-		for (String pname : arena.getPlayersManager().getPlayersInArena()) {
-			Bukkit.getPlayerExact(pname).sendMessage("Player "+player.getName()+" joined the arena");
+		if (!msgtoplayer.isEmpty()) {
+			player.sendMessage(msgtoplayer);
 		}
-		// set player on arena data
+		if (!msgtoarenaplayers.isEmpty()) {
+			for (Player oplayer : arena.getPlayersManager().getPlayersInArena()) {
+				oplayer.sendMessage(msgtoarenaplayers);
+			}
+		}
 		arena.getPlayersManager().addPlayerToArena(player.getName());
-		// check for game start
 		if (!arena.getStatusManager().isArenaStarting() && arena.getPlayersManager().getPlayersCount() == arena.getStructureManager().getMinPlayers()) {
+			arena.getGameHandler().startArena();
 		}
 	}
 
-	// remove player from arena
 	@SuppressWarnings("deprecation")
 	public void leavePlayer(Player player, String msgtoplayer, String msgtoarenaplayers) {
-		// remove player on arena data
 		arena.getPlayersManager().removePlayerFromArena(player.getName());
-		// restore location ot teleport to lobby
-		plugin.pdata.restorePlayerLocation(player);
-		// restore player status
-		plugin.pdata.restorePlayerHunger(player);
-		plugin.pdata.restorePlayerPotionEffects(player);
-		plugin.pdata.restorePlayerArmor(player);
-		plugin.pdata.restorePlayerInventory(player);
-		plugin.pdata.restorePlayerGameMode(player);
-		// update inventory
+		arena.plugin.pdata.restorePlayerLocation(player);
+		arena.plugin.pdata.restorePlayerHunger(player);
+		arena.plugin.pdata.restorePlayerPotionEffects(player);
+		arena.plugin.pdata.restorePlayerArmor(player);
+		arena.plugin.pdata.restorePlayerInventory(player);
+		arena.plugin.pdata.restorePlayerGameMode(player);
 		player.updateInventory();
-		// send message to player
-		player.sendMessage("You left the arena");
-		// send message to other players
-		for (String pname : arena.getPlayersManager().getPlayersInArena()) {
-			Bukkit.getPlayerExact(pname).sendMessage("Player "+player.getName()+" left the arena");
+		if (!msgtoplayer.isEmpty()) {
+			player.sendMessage(msgtoplayer);
+		}
+		if (!msgtoarenaplayers.isEmpty()) {
+			for (Player oplayer : arena.getPlayersManager().getPlayersInArena()) {
+				oplayer.sendMessage("Player "+player.getName()+" left the arena");
+			}
 		}
 	}
 

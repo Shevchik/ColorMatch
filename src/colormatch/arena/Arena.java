@@ -2,6 +2,8 @@ package colormatch.arena;
 
 import java.io.File;
 
+import colormatch.arena.handlers.GameHandler;
+import colormatch.arena.handlers.PlayerHandler;
 import colormatch.arena.status.PlayersManager;
 import colormatch.arena.status.StatusManager;
 import colormatch.arena.structure.StructureManager;
@@ -31,6 +33,11 @@ public class Arena {
 	public StatusManager getStatusManager() {
 		return statusManager;
 	}
+	
+	private PlayerHandler playerHandler = new PlayerHandler(this);
+	public PlayerHandler getPlayerHandler() {
+		return playerHandler;
+	}
 
 	private PlayersManager playersManager = new PlayersManager();
 	public PlayersManager getPlayersManager() {
@@ -40,6 +47,11 @@ public class Arena {
 	private StructureManager structureManager = new StructureManager(this);
 	public StructureManager getStructureManager() {
 		return structureManager;
+	}
+
+	private GameHandler gameHandler = new GameHandler(this);
+	public GameHandler getGameHandler() {
+		return gameHandler;
 	}
 
 }
