@@ -16,14 +16,5 @@ public class StructureManager {
 	public GameLevel getGameLevel() {
 		return gl;
 	}
-	
-	private Vector spawnpoint = null;
-	public Vector getSpawnPointVector() {
-		return spawnpoint;
-	}
-	public Location getSpawnPoint() {
-		Location spawn = new Location(getWorld(), spawnpoint.getX(), spawnpoint.getY(), spawnpoint.getZ());
-		return spawn;
-	}
 
 }
