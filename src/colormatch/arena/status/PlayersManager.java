@@ -1,6 +1,5 @@
 package colormatch.arena.status;
 
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -20,7 +19,7 @@ public class PlayersManager {
 	}
 
 	public Set<String> getPlayersNamesInArena() {
-		return Collections.unmodifiableSet(players);
+		return new HashSet<String>(players);
 	}
 	
 	public Set<Player> getPlayersInArena() {
