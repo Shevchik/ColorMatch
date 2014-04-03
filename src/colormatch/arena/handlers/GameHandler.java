@@ -72,8 +72,8 @@ public class GameHandler {
 		arena.getStatusManager().setRunning(true);
 		for (Player player : arena.getPlayersManager().getPlayersInArena()) {
 			player.sendMessage("Game started");
-			startRound();
 		}
+		startRound();
 	}
 
 	private int roundtime = 10;
