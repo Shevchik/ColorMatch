@@ -100,7 +100,7 @@ public class PlayerHandler {
 		}
 		if (!msgtoarenaplayers.isEmpty()) {
 			for (Player oplayer : arena.getPlayersManager().getPlayersInArena()) {
-				oplayer.sendMessage("Player "+player.getName()+" left the arena");
+				oplayer.sendMessage(msgtoarenaplayers);
 			}
 		}
 	}
