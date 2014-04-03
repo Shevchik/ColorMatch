@@ -110,7 +110,7 @@ public class GameHandler {
 								}
 								if (arena.getPlayersManager().getPlayersCount() == 1) {
 									Player player = arena.getPlayersManager().getPlayersInArena().iterator().next();
-									arena.getPlayerHandler().leavePlayer(player, "You won the arena", "");
+									arena.getPlayerHandler().leaveWinner(player, "You won the arena");
 									broadcastWin(player);
 									stopArena();
 									return;

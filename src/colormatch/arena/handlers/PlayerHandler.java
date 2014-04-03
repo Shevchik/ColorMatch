@@ -85,16 +85,9 @@ public class PlayerHandler {
 		}
 	}
 
-	@SuppressWarnings("deprecation")
+
 	public void leavePlayer(Player player, String msgtoplayer, String msgtoarenaplayers) {
-		arena.getPlayersManager().removePlayerFromArena(player.getName());
-		arena.plugin.pdata.restorePlayerHunger(player);
-		arena.plugin.pdata.restorePlayerPotionEffects(player);
-		arena.plugin.pdata.restorePlayerArmor(player);
-		arena.plugin.pdata.restorePlayerInventory(player);
-		arena.plugin.pdata.restorePlayerGameMode(player);
-		player.updateInventory();
-		arena.plugin.pdata.restorePlayerLocation(player);
+		removePlayerFromArenaAndRestoreState(player, false);
 		if (!msgtoplayer.isEmpty()) {
 			player.sendMessage(msgtoplayer);
 		}
@@ -103,6 +96,28 @@ public class PlayerHandler {
 				oplayer.sendMessage(msgtoarenaplayers);
 			}
 		}
+	}
+
+	protected void leaveWinner(Player player, String msgtoplayer) {
+		removePlayerFromArenaAndRestoreState(player, true);
+		if (!msgtoplayer.isEmpty()) {
+			player.sendMessage(msgtoplayer);
+		}
+	}
+
+	@SuppressWarnings("deprecation")
+	private void removePlayerFromArenaAndRestoreState(Player player, boolean winner) {
+		arena.getPlayersManager().removePlayerFromArena(player.getName());
+		arena.plugin.pdata.restorePlayerHunger(player);
+		arena.plugin.pdata.restorePlayerPotionEffects(player);
+		arena.plugin.pdata.restorePlayerArmor(player);
+		arena.plugin.pdata.restorePlayerInventory(player);
+		if (winner) {
+			arena.getStructureManager().getRewards().rewardPlayer(player);
+		}
+		arena.plugin.pdata.restorePlayerGameMode(player);
+		player.updateInventory();
+		arena.plugin.pdata.restorePlayerLocation(player);
 	}
 
 }
