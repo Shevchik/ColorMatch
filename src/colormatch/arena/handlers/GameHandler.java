@@ -80,6 +80,7 @@ public class GameHandler {
 	private Random rnd = new Random();
 	private DyeColor[] colors = DyeColor.values();
 	private DyeColor currentcolor;
+	@SuppressWarnings("deprecation")
 	private void startRound() {
 		if (roundtime <= 0) {
 			for (Player player : arena.getPlayersManager().getPlayersInArena()) {
@@ -90,6 +91,7 @@ public class GameHandler {
 		currentcolor = colors[rnd.nextInt(colors.length)];
 		for (Player player : arena.getPlayersManager().getPlayersInArena()) {
 			player.getInventory().setItem(0, new Wool(currentcolor).toItemStack());
+			player.updateInventory();
 			player.sendMessage("You have "+roundtime+" seconds to pick the safe position");
 		}
 		Bukkit.getScheduler().scheduleSyncDelayedTask(arena.plugin,
