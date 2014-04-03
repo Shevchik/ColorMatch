@@ -60,6 +60,10 @@ public class PlayerHandler {
 	Random random = new Random();
 	@SuppressWarnings("deprecation")
 	public void spawnPlayer(final Player player, String msgtoplayer, String msgtoarenaplayers) {
+		arena.plugin.pdata.storePlayerLocation(player);
+		Vector s = arena.getStructureManager().getGameLevel().getSpawnPoint();
+		player.teleport(new Location(arena.getStructureManager().getGameLevel().getWorld(), s.getX()+8-random.nextInt(16), s.getY(), s.getZ()+8-random.nextInt(16)));
+		player.updateInventory();
 		arena.plugin.pdata.storePlayerGameMode(player);
 		player.setFlying(false);
 		player.setAllowFlight(false);
@@ -67,10 +71,6 @@ public class PlayerHandler {
 		arena.plugin.pdata.storePlayerArmor(player);
 		arena.plugin.pdata.storePlayerPotionEffects(player);
 		arena.plugin.pdata.storePlayerHunger(player);
-		arena.plugin.pdata.storePlayerLocation(player);
-		Vector s = arena.getStructureManager().getGameLevel().getSpawnPoint();
-		player.teleport(new Location(arena.getStructureManager().getGameLevel().getWorld(), s.getX()+8-random.nextInt(16), s.getY(), s.getZ()+8-random.nextInt(16)));
-		player.updateInventory();
 		if (!msgtoplayer.isEmpty()) {
 			player.sendMessage(msgtoplayer);
 		}
@@ -88,13 +88,13 @@ public class PlayerHandler {
 	@SuppressWarnings("deprecation")
 	public void leavePlayer(Player player, String msgtoplayer, String msgtoarenaplayers) {
 		arena.getPlayersManager().removePlayerFromArena(player.getName());
-		arena.plugin.pdata.restorePlayerLocation(player);
 		arena.plugin.pdata.restorePlayerHunger(player);
 		arena.plugin.pdata.restorePlayerPotionEffects(player);
 		arena.plugin.pdata.restorePlayerArmor(player);
 		arena.plugin.pdata.restorePlayerInventory(player);
 		arena.plugin.pdata.restorePlayerGameMode(player);
 		player.updateInventory();
+		arena.plugin.pdata.restorePlayerLocation(player);
 		if (!msgtoplayer.isEmpty()) {
 			player.sendMessage(msgtoplayer);
 		}
