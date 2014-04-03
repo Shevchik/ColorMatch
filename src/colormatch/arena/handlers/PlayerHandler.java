@@ -17,6 +17,8 @@
 
 package colormatch.arena.handlers;
 
+import java.util.Random;
+
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
@@ -55,6 +57,7 @@ public class PlayerHandler {
 		return true;
 	}
 
+	Random random = new Random();
 	@SuppressWarnings("deprecation")
 	public void spawnPlayer(final Player player, String msgtoplayer, String msgtoarenaplayers) {
 		arena.plugin.pdata.storePlayerGameMode(player);
@@ -66,7 +69,7 @@ public class PlayerHandler {
 		arena.plugin.pdata.storePlayerHunger(player);
 		arena.plugin.pdata.storePlayerLocation(player);
 		Vector s = arena.getStructureManager().getGameLevel().getSpawnPoint();
-		player.teleport(new Location(arena.getStructureManager().getGameLevel().getWorld(), s.getX(), s.getY(), s.getZ()));
+		player.teleport(new Location(arena.getStructureManager().getGameLevel().getWorld(), s.getX()+8-random.nextInt(16), s.getY(), s.getZ()+8-random.nextInt(16)));
 		player.updateInventory();
 		if (!msgtoplayer.isEmpty()) {
 			player.sendMessage(msgtoplayer);
