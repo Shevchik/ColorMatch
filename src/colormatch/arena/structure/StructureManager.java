@@ -36,6 +36,11 @@ public class StructureManager {
 		return gl;
 	}
 
+	private Rewards rewards = new Rewards();
+	public Rewards getRewards() {
+		return rewards;
+	}
+
 	private int minPlayers = 2;
 	public int getMinPlayers() {
 		return minPlayers;
@@ -67,6 +72,7 @@ public class StructureManager {
 		config.set("minplayers", minPlayers);
 		config.set("maxplayers", maxPlayers);
 		gl.saveToConfig(config);
+		rewards.saveToConfig(config);
 		try {
 			config.save(arena.getArenaFile());
 		} catch (IOException e) {
@@ -78,6 +84,7 @@ public class StructureManager {
 		minPlayers = config.getInt("minplayers", minPlayers);
 		maxPlayers = config.getInt("minplayers", minPlayers);
 		gl.loadFromConfig(config);
+		rewards.loadFromConfig(config);
 	}
 
 }
