@@ -25,6 +25,7 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Block;
+import org.bukkit.block.BlockState;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.material.Wool;
 import org.bukkit.util.Vector;
@@ -72,8 +73,11 @@ public class GameLevel {
 				Block b = getWorld().getBlockAt(x, y, z);
 				if (b.getType() != Material.WOOL) {
 					b.setType(Material.WOOL);
-					Wool wool = (Wool) b.getState().getData();
+					BlockState bs = b.getState();
+					Wool wool = (Wool) bs.getData();
 					wool.setColor(colors[rnd.nextInt(colors.length)]);
+					bs.setData(wool);
+					bs.update();
 				}
 			}
 		}
