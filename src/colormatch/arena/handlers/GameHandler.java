@@ -17,9 +17,13 @@
 
 package colormatch.arena.handlers;
 
+import java.util.Random;
+
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.DyeColor;
 import org.bukkit.entity.Player;
+import org.bukkit.material.Wool;
 
 import colormatch.arena.Arena;
 
@@ -64,23 +68,72 @@ public class GameHandler {
 		Bukkit.getScheduler().cancelTask(runtaskid);
 	}
 
-
-	private int timelimit;
-	private int arenahandler;
-
 	public void startArena() {
 		arena.getStatusManager().setRunning(true);
 		for (Player player : arena.getPlayersManager().getPlayersInArena()) {
 			player.sendMessage("Game started");
+			startRound();
 		}
+	}
+
+	private int roundtime = 10;
+	private Random rnd = new Random();
+	private DyeColor[] colors = DyeColor.values();
+	private DyeColor currentcolor;
+	private void startRound() {
+		if (roundtime <= 0) {
+			for (Player player : arena.getPlayersManager().getPlayersInArena()) {
+				arena.getPlayerHandler().leavePlayer(player, "Time out", "");
+			}
+			stopArena();
+		}
+		currentcolor = colors[rnd.nextInt(colors.length)];
+		for (Player player : arena.getPlayersManager().getPlayersInArena()) {
+			player.getInventory().setItem(0, new Wool(currentcolor).toItemStack());
+			player.sendMessage("You have "+roundtime+" seconds to pick the safe position");
+		}
+		Bukkit.getScheduler().scheduleSyncDelayedTask(arena.plugin,
+			new Runnable() {
+				@Override
+				public void run() {
+					arena.getStructureManager().getGameLevel().removeAllWoolExceptColor(currentcolor);
+					Bukkit.getScheduler().scheduleSyncDelayedTask(arena.plugin, new 
+						Runnable() {
+							@Override
+							public void run() {
+								for (Player player : arena.getPlayersManager().getPlayersInArena()) {
+									if (arena.getStructureManager().getGameLevel().getSpawnPoint().getBlockY() - player.getLocation().getBlockY() > 2) {
+										arena.getPlayerHandler().leavePlayer(player, "You fell", player.getName() + " fell");
+									}
+								}
+								if (arena.getPlayersManager().getPlayersCount() == 1) {
+									Player player = arena.getPlayersManager().getPlayersInArena().iterator().next();
+									arena.getPlayerHandler().leavePlayer(player, "You won the arena", "");
+									broadcastWin(player);
+									stopArena();
+									return;
+								}
+								if (arena.getPlayersManager().getPlayersCount() == 0) {
+									stopArena();
+									return;
+								}
+								roundtime -= 1;
+								arena.getStructureManager().getGameLevel().regen();
+								startRound();
+							}
+						}, 40
+					);
+				}
+			}, roundtime*20
+		);
 	}
 
 	public void stopArena() {
 		arena.getStatusManager().setRunning(false);
-		Bukkit.getScheduler().cancelTask(arenahandler);
 		if (arena.getStatusManager().isArenaEnabled()) {
 			arena.getStructureManager().getGameLevel().regen();
 		}
+		roundtime = 10;
 	}
 
 	private void broadcastWin(Player player) {
