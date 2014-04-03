@@ -58,7 +58,7 @@ public class SetupCommandsHandler implements CommandExecutor {
 			return true;
 		}
 		Player player = (Player) sender;
-		if (!player.hasPermission("colormatch.setup")) {
+		if (!player.hasPermission("colorshufflematch.setup")) {
 			player.sendMessage(ChatColor.RED+"You don't have permissions to do that");
 			return true;
 		}
