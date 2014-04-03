@@ -1,0 +1,12 @@
+name: ColorShuffleMatch
+main: colormatch.core.ColorMatch
+version: 1.0
+author: _Shevchik_
+commands:
+  colormatchsetup:
+    description: ColorMatch arena setup commands
+    aliases: cmsetup
+    usage: Command is invalid
+  colormatch:
+    description: ColorMatch game commands
+    aliases: cm
