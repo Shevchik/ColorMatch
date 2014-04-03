@@ -32,8 +32,10 @@ import colormatch.commands.setup.arena.DisableArena;
 import colormatch.commands.setup.arena.EnableArena;
 import colormatch.commands.setup.arena.FinishArena;
 import colormatch.commands.setup.arena.SetGameLevel;
+import colormatch.commands.setup.arena.SetItemsRewards;
 import colormatch.commands.setup.arena.SetMaxPlayers;
 import colormatch.commands.setup.arena.SetMinPlayers;
+import colormatch.commands.setup.arena.SetMoneyRewards;
 import colormatch.core.ColorMatch;
 
 public class SetupCommandsHandler implements CommandExecutor {
@@ -46,6 +48,8 @@ public class SetupCommandsHandler implements CommandExecutor {
 		commandHandlers.put("setgamelevel", new SetGameLevel(plugin));
 		commandHandlers.put("setmaxplayers", new SetMaxPlayers(plugin));
 		commandHandlers.put("setminplayers", new SetMinPlayers(plugin));
+		commandHandlers.put("setitemsrewards", new SetItemsRewards(plugin));
+		commandHandlers.put("setmoneyrewards", new SetMoneyRewards(plugin));
 		commandHandlers.put("finish", new FinishArena(plugin));
 		commandHandlers.put("disable", new DisableArena(plugin));
 		commandHandlers.put("enable", new EnableArena(plugin));
