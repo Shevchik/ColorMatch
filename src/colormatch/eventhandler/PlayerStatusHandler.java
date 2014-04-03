@@ -40,7 +40,7 @@ public class PlayerStatusHandler implements Listener {
 		if (e.getEntity() instanceof Player) {
 			Player player = (Player) e.getEntity();
 			if (plugin.amanager.getPlayerArena(player.getName()) != null) {
-				e.setCancelled(true);
+				e.setDamage(0.0);
 			}
 		}
 	}
