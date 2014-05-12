@@ -72,7 +72,7 @@ public class GameLevel {
 			}
 		}
 		final Iterator<Block> it = blocks.iterator();
-		for (int delay = 1; delay < (blocks.size() / MAX_BLOCKS_PER_TICK ) + 1; delay++) {
+		for (int delay = 1; delay <= (blocks.size() / MAX_BLOCKS_PER_TICK ) + 1; delay++) {
 			Bukkit.getScheduler().scheduleSyncDelayedTask(
 				arena.plugin,
 				new Runnable() {
@@ -117,7 +117,7 @@ public class GameLevel {
 			}
 		}
 		final Iterator<Block> it = blocks.iterator();
-		for (int delay = 1; delay < (blocks.size() / MAX_BLOCKS_PER_TICK ) + 1; delay++) {
+		for (int delay = 1; delay <= (blocks.size() / MAX_BLOCKS_PER_TICK ) + 1; delay++) {
 			Bukkit.getScheduler().scheduleSyncDelayedTask(
 				arena.plugin,
 				new Runnable() {
