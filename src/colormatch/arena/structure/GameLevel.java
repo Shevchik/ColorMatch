@@ -63,9 +63,11 @@ public class GameLevel {
 		for (int x = p1.getBlockX() + 1; x < p2.getBlockX(); x++) {
 			for (int z = p1.getBlockZ() + 1; z < p2.getBlockZ(); z++) {
 				Block b = getWorld().getBlockAt(x, y, z);
-				Wool wool = (Wool) b.getState().getData();
-				if (wool.getColor() != color) {
-					blocks.add(b);
+				if (b.getType() == Material.WOOL) {
+					Wool wool = (Wool) b.getState().getData();
+					if (wool.getColor() != color) {
+						blocks.add(b);
+					}
 				}
 			}
 		}
