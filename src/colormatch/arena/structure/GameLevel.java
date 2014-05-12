@@ -17,6 +17,8 @@
 
 package colormatch.arena.structure;
 
+import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.Random;
 
 import org.bukkit.Bukkit;
@@ -29,6 +31,8 @@ import org.bukkit.block.BlockState;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.material.Wool;
 import org.bukkit.util.Vector;
+
+import colormatch.arena.Arena;
 
 public class GameLevel {
 
@@ -51,16 +55,37 @@ public class GameLevel {
 		regen();
 	}
 
-	public void removeAllWoolExceptColor(DyeColor color) {
+	private final int MAX_BLOCKS_PER_TICK = 100;
+	public void removeAllWoolExceptColor(final Arena arena, DyeColor color) {
 		int y = p1.getBlockY();
+		LinkedList<Block> blocks = new LinkedList<Block>();
 		for (int x = p1.getBlockX() + 1; x < p2.getBlockX(); x++) {
 			for (int z = p1.getBlockZ() + 1; z < p2.getBlockZ(); z++) {
 				Block b = getWorld().getBlockAt(x, y, z);
 				Wool wool = (Wool) b.getState().getData();
 				if (wool.getColor() != color) {
-					b.setType(Material.AIR);
+					blocks.add(b);
 				}
 			}
+		}
+		final Iterator<Block> it = blocks.iterator();
+		for (int delay = 1; delay < (blocks.size() / MAX_BLOCKS_PER_TICK ) + 1; delay++) {
+			Bukkit.getScheduler().scheduleSyncDelayedTask(
+				arena.plugin,
+				new Runnable() {
+					@Override
+					public void run() {
+						if (arena.getStatusManager().isArenaEnabled()) {
+							int curblocks = 0;
+							while (it.hasNext() && curblocks < MAX_BLOCKS_PER_TICK) {
+								it.next().setType(Material.AIR);
+								curblocks++;
+							}
+						}
+					}
+				},
+				delay
+			);
 		}
 	}
 

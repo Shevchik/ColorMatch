@@ -98,7 +98,7 @@ public class GameHandler {
 			new Runnable() {
 				@Override
 				public void run() {
-					arena.getStructureManager().getGameLevel().removeAllWoolExceptColor(currentcolor);
+					arena.getStructureManager().getGameLevel().removeAllWoolExceptColor(arena, currentcolor);
 					Bukkit.getScheduler().scheduleSyncDelayedTask(arena.plugin, new 
 						Runnable() {
 							@Override
@@ -123,7 +123,7 @@ public class GameHandler {
 								arena.getStructureManager().getGameLevel().regen();
 								startRound();
 							}
-						}, 40
+						}, 60
 					);
 				}
 			}, roundtime*20
