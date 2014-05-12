@@ -56,7 +56,7 @@ public class StatusManager {
 			arena.getGameHandler().stopArena();
 		}
 		if (arena.getStructureManager().getGameLevel().getSpawnPoint() != null) {
-			arena.getStructureManager().getGameLevel().regen();
+			arena.getStructureManager().getGameLevel().regenNow();
 		}
 	}
 

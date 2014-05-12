@@ -52,7 +52,7 @@ public class GameLevel {
 		p1 = location.toVector();
 		p2 = p1.clone().add(new Vector(32, 0, 32));
 		centralPoint = p1.clone().add(new Vector(16, 1, 16));
-		regen();
+		regenNow();
 	}
 
 	private final int MAX_BLOCKS_PER_TICK = 100;
@@ -91,19 +91,31 @@ public class GameLevel {
 
 	private Random rnd = new Random();
 	private DyeColor[] colors = DyeColor.values();
+	public void regenNow() {
+		int y = p1.getBlockY();
+		for (int x = p1.getBlockX() + 1; x < p2.getBlockX(); x++) {
+			for (int z = p1.getBlockZ() + 1; z < p2.getBlockZ(); z++) {
+				Block b = getWorld().getBlockAt(x, y, z);
+				b.setType(Material.WOOL);
+				BlockState bs = b.getState();
+				Wool wool = (Wool) bs.getData();
+				wool.setColor(colors[rnd.nextInt(colors.length)]);
+				bs.setData(wool);
+				bs.update();
+			}
+		}
+	}
 	public void regen() {
 		int y = p1.getBlockY();
 		for (int x = p1.getBlockX() + 1; x < p2.getBlockX(); x++) {
 			for (int z = p1.getBlockZ() + 1; z < p2.getBlockZ(); z++) {
 				Block b = getWorld().getBlockAt(x, y, z);
-				if (b.getType() != Material.WOOL) {
-					b.setType(Material.WOOL);
-					BlockState bs = b.getState();
-					Wool wool = (Wool) bs.getData();
-					wool.setColor(colors[rnd.nextInt(colors.length)]);
-					bs.setData(wool);
-					bs.update();
-				}
+				b.setType(Material.WOOL);
+				BlockState bs = b.getState();
+				Wool wool = (Wool) bs.getData();
+				wool.setColor(colors[rnd.nextInt(colors.length)]);
+				bs.setData(wool);
+				bs.update();
 			}
 		}
 	}
