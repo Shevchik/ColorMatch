@@ -99,8 +99,8 @@ public class GameHandler {
 				@Override
 				public void run() {
 					arena.getStructureManager().getGameLevel().removeAllWoolExceptColor(arena, currentcolor);
-					Bukkit.getScheduler().scheduleSyncDelayedTask(arena.plugin, new 
-						Runnable() {
+					Bukkit.getScheduler().scheduleSyncDelayedTask(
+						arena.plugin, new Runnable() {
 							@Override
 							public void run() {
 								for (Player player : arena.getPlayersManager().getPlayersInArena()) {
@@ -121,13 +121,15 @@ public class GameHandler {
 								}
 								roundtime -= 1;
 								arena.getStructureManager().getGameLevel().regen(arena);
-								Bukkit.getScheduler().scheduleSyncDelayedTask(arena.plugin, 
+								Bukkit.getScheduler().scheduleSyncDelayedTask(
+									arena.plugin, 
 									new Runnable() {
 										@Override
 										public void run() {
 											startRound();
 										}
-									}
+									}, 
+									20
 								);
 							}
 						}, 60
