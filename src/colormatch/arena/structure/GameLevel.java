@@ -59,17 +59,15 @@ public class GameLevel {
 	@SuppressWarnings("deprecation")
 	private final int AIR_ID = Material.AIR.getId();
 	
+	@SuppressWarnings("deprecation")
 	public void removeAllWoolExceptColor(final Arena arena, DyeColor color) {
 		int y = p1.getBlockY();
 		LinkedList<Block> blocks = new LinkedList<Block>();
 		for (int x = p1.getBlockX() + 1; x < p2.getBlockX(); x++) {
 			for (int z = p1.getBlockZ() + 1; z < p2.getBlockZ(); z++) {
 				Block b = getWorld().getBlockAt(x, y, z);
-				if (b.getType() == Material.WOOL) {
-					Wool wool = (Wool) b.getState().getData();
-					if (wool.getColor() != color) {
-						blocks.add(b);
-					}
+				if (b.getData() != color.getData()) {
+					blocks.add(b);
 				}
 			}
 		}
