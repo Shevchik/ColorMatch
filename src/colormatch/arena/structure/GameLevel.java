@@ -79,7 +79,7 @@ public class GameLevel {
 						int curblocks = 0;
 						while (it.hasNext() && curblocks < MAX_BLOCKS_PER_TICK) {
 							Block block = it.next();
-							SetBlockFast.setBlock(getWorld(), block.getX(), block.getY(), block.getZ(), AIR_ID, 0);
+							SetBlockFast.setBlock(block.getWorld(), block.getX(), block.getY(), block.getZ(), AIR_ID, 0);
 							curblocks++;
 						}
 					}
@@ -122,7 +122,7 @@ public class GameLevel {
 						int curblocks = 0;
 						while (it.hasNext() && curblocks < MAX_BLOCKS_PER_TICK) {
 							Block b = it.next();
-							SetBlockFast.setBlock(getWorld(), b.getX(), b.getY(), b.getZ(), WOOL_ID, COLORS[rnd.nextInt(COLORS.length)]);
+							SetBlockFast.setBlock(b.getWorld(), b.getX(), b.getY(), b.getZ(), WOOL_ID, COLORS[rnd.nextInt(COLORS.length)]);
 							curblocks++;
 						}
 					}
