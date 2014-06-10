@@ -72,21 +72,22 @@ public class GameLevel {
 		}
 		final Iterator<Block> it = blocks.iterator();
 		for (int delay = 1; delay <= (blocks.size() / MAX_BLOCKS_PER_TICK ) + 1; delay++) {
-			Bukkit.getScheduler().scheduleSyncDelayedTask(
-				arena.plugin,
-				new Runnable() {
-					@Override
-					public void run() {
-						if (arena.getStatusManager().isArenaEnabled()) {
-							int curblocks = 0;
-							while (it.hasNext() && curblocks < MAX_BLOCKS_PER_TICK) {
-								Block block = it.next();
-								SetBlockFast.setBlock(getWorld(), block.getX(), block.getY(), block.getZ(), AIR_ID, 0);
-								curblocks++;
-							}
+			Runnable removeWool = new Runnable() {
+				@Override
+				public void run() {
+					if (arena.getStatusManager().isArenaEnabled()) {
+						int curblocks = 0;
+						while (it.hasNext() && curblocks < MAX_BLOCKS_PER_TICK) {
+							Block block = it.next();
+							SetBlockFast.setBlock(getWorld(), block.getX(), block.getY(), block.getZ(), AIR_ID, 0);
+							curblocks++;
 						}
 					}
-				},
+				}
+			};
+			Bukkit.getScheduler().scheduleSyncDelayedTask(
+				arena.plugin,
+				removeWool,
 				delay
 			);
 		}
@@ -114,21 +115,22 @@ public class GameLevel {
 		}
 		final Iterator<Block> it = blocks.iterator();
 		for (int delay = 1; delay <= (blocks.size() / MAX_BLOCKS_PER_TICK ) + 1; delay++) {
-			Bukkit.getScheduler().scheduleSyncDelayedTask(
-				arena.plugin,
-				new Runnable() {
-					@Override
-					public void run() {
-						if (arena.getStatusManager().isArenaEnabled()) {
-							int curblocks = 0;
-							while (it.hasNext() && curblocks < MAX_BLOCKS_PER_TICK) {
-								Block b = it.next();
-								SetBlockFast.setBlock(getWorld(), b.getX(), b.getY(), b.getZ(), WOOL_ID, COLORS[rnd.nextInt(COLORS.length)]);
-								curblocks++;
-							}
+			Runnable regenLevel = new Runnable() {
+				@Override
+				public void run() {
+					if (arena.getStatusManager().isArenaEnabled()) {
+						int curblocks = 0;
+						while (it.hasNext() && curblocks < MAX_BLOCKS_PER_TICK) {
+							Block b = it.next();
+							SetBlockFast.setBlock(getWorld(), b.getX(), b.getY(), b.getZ(), WOOL_ID, COLORS[rnd.nextInt(COLORS.length)]);
+							curblocks++;
 						}
 					}
-				},
+				}
+			};
+			Bukkit.getScheduler().scheduleSyncDelayedTask(
+				arena.plugin,
+				regenLevel,
 				delay
 			);
 		}
