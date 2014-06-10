@@ -125,7 +125,7 @@ public class GameLevel {
 							while (it.hasNext() && curblocks < MAX_BLOCKS_PER_TICK) {
 								Block b = it.next();
 								SetBlockFast.setBlock(getWorld(), b.getX(), b.getY(), b.getZ(), WOOL_ID, COLORS[rnd.nextInt(COLORS.length)]);
-								curblocks++
+								curblocks++;
 							}
 						}
 					}
