@@ -27,12 +27,12 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Block;
-import org.bukkit.block.BlockState;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.material.Wool;
 import org.bukkit.util.Vector;
 
 import colormatch.arena.Arena;
+import colormatch.utils.SetBlockFast;
 
 public class GameLevel {
 
@@ -56,7 +56,9 @@ public class GameLevel {
 	}
 
 	private final int MAX_BLOCKS_PER_TICK = 100;
-
+	@SuppressWarnings("deprecation")
+	private final int AIR_ID = Material.AIR.getId();
+	
 	public void removeAllWoolExceptColor(final Arena arena, DyeColor color) {
 		int y = p1.getBlockY();
 		LinkedList<Block> blocks = new LinkedList<Block>();
@@ -81,6 +83,8 @@ public class GameLevel {
 						if (arena.getStatusManager().isArenaEnabled()) {
 							int curblocks = 0;
 							while (it.hasNext() && curblocks < MAX_BLOCKS_PER_TICK) {
+								Block block = it.next();
+								SetBlockFast.setBlock(getWorld(), block.getX(), block.getY(), block.getZ(), AIR_ID, 0);
 								it.next().setType(Material.AIR);
 								curblocks++;
 							}
@@ -92,19 +96,15 @@ public class GameLevel {
 		}
 	}
 
-	private Random rnd = new Random();
-	private DyeColor[] colors = DyeColor.values();
+	@SuppressWarnings("deprecation")
+	private final int WOOL_ID = Material.WOOL.getId();
+	private final Random rnd = new Random();
+	private final byte[] COLORS = new byte[] {0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15};
 	public void regenNow() {
 		int y = p1.getBlockY();
 		for (int x = p1.getBlockX() + 1; x < p2.getBlockX(); x++) {
 			for (int z = p1.getBlockZ() + 1; z < p2.getBlockZ(); z++) {
-				Block b = getWorld().getBlockAt(x, y, z);
-				b.setType(Material.WOOL);
-				BlockState bs = b.getState();
-				Wool wool = (Wool) bs.getData();
-				wool.setColor(colors[rnd.nextInt(colors.length)]);
-				bs.setData(wool);
-				bs.update();
+				SetBlockFast.setBlock(getWorld(), x, y, z, WOOL_ID, COLORS[rnd.nextInt(COLORS.length)]);
 			}
 		}
 	}
@@ -127,13 +127,7 @@ public class GameLevel {
 							int curblocks = 0;
 							while (it.hasNext() && curblocks < MAX_BLOCKS_PER_TICK) {
 								Block b = it.next();
-								b.setType(Material.WOOL);
-								BlockState bs = b.getState();
-								Wool wool = (Wool) bs.getData();
-								wool.setColor(colors[rnd.nextInt(colors.length)]);
-								bs.setData(wool);
-								bs.update();
-								curblocks++;
+								SetBlockFast.setBlock(getWorld(), b.getX(), b.getY(), b.getZ(), WOOL_ID, COLORS[rnd.nextInt(COLORS.length)]);
 							}
 						}
 					}

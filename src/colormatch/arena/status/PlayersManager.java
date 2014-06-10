@@ -39,6 +39,7 @@ public class PlayersManager {
 		return new HashSet<String>(players);
 	}
 
+	@SuppressWarnings("deprecation")
 	public Set<Player> getPlayersInArena() {
 		HashSet<Player> playersset = new HashSet<Player>();
 		for (String playername : players) {
