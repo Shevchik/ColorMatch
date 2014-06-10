@@ -85,7 +85,6 @@ public class GameLevel {
 							while (it.hasNext() && curblocks < MAX_BLOCKS_PER_TICK) {
 								Block block = it.next();
 								SetBlockFast.setBlock(getWorld(), block.getX(), block.getY(), block.getZ(), AIR_ID, 0);
-								it.next().setType(Material.AIR);
 								curblocks++;
 							}
 						}
