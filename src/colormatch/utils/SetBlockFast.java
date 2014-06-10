@@ -31,6 +31,7 @@ public class SetBlockFast {
 			net.minecraft.server.v1_7_R3.World w = ((CraftWorld) world).getHandle();
 			Chunk chunk = w.getChunkAt(x >> 4, z >> 4);
 			chunk.a(x & 0x0f, y, z & 0x0f, Block.e(blockId), data);
+			w.notify(x, y, z);
 		} catch (Throwable t) {
 			world.getBlockAt(x, y, z).setTypeIdAndData(blockId, (byte) data, false);
 		}
