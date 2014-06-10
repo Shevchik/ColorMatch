@@ -95,9 +95,16 @@ public class GameLevel {
 
 	@SuppressWarnings("deprecation")
 	private final int WOOL_ID = Material.WOOL.getId();
-	private final Random rnd = new Random();
 	private final byte[] COLORS = new byte[] {0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15};
+	private final byte[] randomColorsArray = new byte[7100]; {
+		Random rnd = new Random();
+		for (int i = 0; i < randomColorsArray.length; i++) {
+			randomColorsArray[i] = COLORS[rnd.nextInt(COLORS.length)];
+		}
+	}
+	private int randomCounter = 0;
 	public void regenNow() {
+		Random rnd = new Random();
 		int y = p1.getBlockY();
 		for (int x = p1.getBlockX() + 1; x < p2.getBlockX(); x++) {
 			for (int z = p1.getBlockZ() + 1; z < p2.getBlockZ(); z++) {
@@ -122,7 +129,11 @@ public class GameLevel {
 						int curblocks = 0;
 						while (it.hasNext() && curblocks < MAX_BLOCKS_PER_TICK) {
 							Block b = it.next();
-							SetBlockFast.setBlock(b.getWorld(), b.getX(), b.getY(), b.getZ(), WOOL_ID, COLORS[rnd.nextInt(COLORS.length)]);
+							randomCounter++;
+							if (randomCounter >= randomColorsArray.length) {
+								randomCounter = 0;
+							}
+							SetBlockFast.setBlock(b.getWorld(), b.getX(), b.getY(), b.getZ(), WOOL_ID, randomColorsArray[randomCounter]);
 							curblocks++;
 						}
 					}
