@@ -28,7 +28,6 @@ import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.material.Wool;
 import org.bukkit.util.Vector;
 
 import colormatch.arena.Arena;
