@@ -17,24 +17,21 @@
 
 package colormatch.utils;
 
-import net.minecraft.server.v1_7_R3.Block;
-import net.minecraft.server.v1_7_R3.Chunk;
-
 import org.bukkit.World;
-import org.bukkit.craftbukkit.v1_7_R3.CraftWorld;
 
 public class SetBlockFast {
 
 	@SuppressWarnings("deprecation")
 	public static void setBlock(World world, int x, int y, int z, int blockId, int data) {
-		try {
+		/*try {
 			net.minecraft.server.v1_7_R3.World w = ((CraftWorld) world).getHandle();
 			Chunk chunk = w.getChunkAt(x >> 4, z >> 4);
 			chunk.a(x & 0x0f, y, z & 0x0f, Block.e(blockId), data);
 			w.notify(x, y, z);
 		} catch (Throwable t) {
 			world.getBlockAt(x, y, z).setTypeIdAndData(blockId, (byte) data, false);
-		}
+		}*/
+		world.getBlockAt(x, y, z).setTypeIdAndData(blockId, (byte) data, false);
 	}
 
 }
