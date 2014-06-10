@@ -31,7 +31,6 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.util.Vector;
 
 import colormatch.arena.Arena;
-import colormatch.utils.SetBlockFast;
 
 public class GameLevel {
 
@@ -55,9 +54,7 @@ public class GameLevel {
 	}
 
 	private final int MAX_BLOCKS_PER_TICK = 100;
-	@SuppressWarnings("deprecation")
-	private final int AIR_ID = Material.AIR.getId();
-	
+
 	@SuppressWarnings("deprecation")
 	public void removeAllWoolExceptColor(final Arena arena, DyeColor color) {
 		int y = p1.getBlockY();
@@ -78,8 +75,7 @@ public class GameLevel {
 					if (arena.getStatusManager().isArenaEnabled()) {
 						int curblocks = 0;
 						while (it.hasNext() && curblocks < MAX_BLOCKS_PER_TICK) {
-							Block block = it.next();
-							SetBlockFast.setBlock(block.getWorld(), block.getX(), block.getY(), block.getZ(), AIR_ID, 0);
+							it.next().setType(Material.AIR);
 							curblocks++;
 						}
 					}
@@ -103,12 +99,13 @@ public class GameLevel {
 		}
 	}
 	private int randomCounter = 0;
+	@SuppressWarnings("deprecation")
 	public void regenNow() {
 		Random rnd = new Random();
 		int y = p1.getBlockY();
 		for (int x = p1.getBlockX() + 1; x < p2.getBlockX(); x++) {
 			for (int z = p1.getBlockZ() + 1; z < p2.getBlockZ(); z++) {
-				SetBlockFast.setBlock(getWorld(), x, y, z, WOOL_ID, COLORS[rnd.nextInt(COLORS.length)]);
+				getWorld().getBlockAt(x, y, z).setTypeIdAndData(WOOL_ID, COLORS[rnd.nextInt(COLORS.length)], false);
 			}
 		}
 	}
@@ -123,17 +120,17 @@ public class GameLevel {
 		final Iterator<Block> it = blocks.iterator();
 		for (int delay = 1; delay <= (blocks.size() / MAX_BLOCKS_PER_TICK ) + 1; delay++) {
 			Runnable regenLevel = new Runnable() {
+				@SuppressWarnings("deprecation")
 				@Override
 				public void run() {
 					if (arena.getStatusManager().isArenaEnabled()) {
 						int curblocks = 0;
 						while (it.hasNext() && curblocks < MAX_BLOCKS_PER_TICK) {
-							Block b = it.next();
 							randomCounter++;
 							if (randomCounter >= randomColorsArray.length) {
 								randomCounter = 0;
 							}
-							SetBlockFast.setBlock(b.getWorld(), b.getX(), b.getY(), b.getZ(), WOOL_ID, randomColorsArray[randomCounter]);
+							it.next().setTypeIdAndData(WOOL_ID, randomColorsArray[randomCounter], false);
 							curblocks++;
 						}
 					}
