@@ -17,6 +17,8 @@
 
 package colormatch.arena.structure;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 import org.bukkit.Bukkit;
@@ -39,6 +41,20 @@ public class GameLevel {
 	private String world;
 	public World getWorld() {
 		return Bukkit.getWorld(world);
+	}
+
+	private List<Block> blocks = new ArrayList<Block>(1200);
+	public void cacheBlocks() {
+		clearBlocks();
+		int y = p1.getBlockY();
+		for (int x = p1.getBlockX() + 1; x < p2.getBlockX(); x++) {
+			for (int z = p1.getBlockZ() + 1; z < p2.getBlockZ(); z++) {
+				blocks.add(getWorld().getBlockAt(x, y, z));
+			}
+		}
+	}
+	public void clearBlocks() {
+		blocks.clear();
 	}
 
 	public void setGameLevel(Location location) {
