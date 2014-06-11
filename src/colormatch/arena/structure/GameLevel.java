@@ -62,6 +62,7 @@ public class GameLevel {
 		p1 = location.toVector();
 		p2 = p1.clone().add(new Vector(32, 0, 32));
 		centralPoint = p1.clone().add(new Vector(16, 1, 16));
+		cacheBlocks();
 		regen();
 	}
 
