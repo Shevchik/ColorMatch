@@ -120,17 +120,8 @@ public class GameHandler {
 									return;
 								}
 								roundtime -= 1;
-								arena.getStructureManager().getGameLevel().regen(arena);
-								Bukkit.getScheduler().scheduleSyncDelayedTask(
-									arena.plugin, 
-									new Runnable() {
-										@Override
-										public void run() {
-											startRound();
-										}
-									}, 
-									20
-								);
+								arena.getStructureManager().getGameLevel().regen();
+								startRound();
 							}
 						}, 60
 					);
@@ -142,7 +133,7 @@ public class GameHandler {
 	public void stopArena() {
 		arena.getStatusManager().setRunning(false);
 		if (arena.getStatusManager().isArenaEnabled()) {
-			arena.getStructureManager().getGameLevel().regenNow();
+			arena.getStructureManager().getGameLevel().regen();
 		}
 		roundtime = 10;
 	}

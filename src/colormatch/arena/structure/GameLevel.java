@@ -50,7 +50,7 @@ public class GameLevel {
 		p1 = location.toVector();
 		p2 = p1.clone().add(new Vector(32, 0, 32));
 		centralPoint = p1.clone().add(new Vector(16, 1, 16));
-		regenNow();
+		regen();
 	}
 
 	private final int MAX_BLOCKS_PER_TICK = 100;
@@ -102,8 +102,8 @@ public class GameLevel {
 
 	@SuppressWarnings("deprecation")
 	private final int WOOL_ID = Material.WOOL.getId();
-	private final byte[] COLORS = new byte[] {0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15};
 	private final byte[] randomColorsArray = new byte[7100]; {
+		byte[] COLORS = new byte[] {0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15};
 		Random rnd = new Random();
 		for (int i = 0; i < randomColorsArray.length; i++) {
 			randomColorsArray[i] = COLORS[rnd.nextInt(COLORS.length)];
@@ -111,7 +111,7 @@ public class GameLevel {
 	}
 	private int randomCounter = 0;
 	@SuppressWarnings("deprecation")
-	public void regenNow() {
+	public void regen() {
 		int y = p1.getBlockY();
 		World world = getWorld();
 		for (int x = p1.getBlockX() + 1; x < p2.getBlockX(); x++) {
@@ -121,50 +121,6 @@ public class GameLevel {
 					randomCounter = 0;
 				}
 				world.getBlockAt(x, y, z).setTypeIdAndData(WOOL_ID, randomColorsArray[randomCounter], false);
-			}
-		}
-	}
-	public void regen(final Arena arena) {
-		int y = p1.getBlockY();
-		World world = getWorld();
-		LinkedList<Block> blocks = new LinkedList<Block>();
-		for (int x = p1.getBlockX() + 1; x < p2.getBlockX(); x++) {
-			for (int z = p1.getBlockZ() + 1; z < p2.getBlockZ(); z++) {
-				blocks.add(world.getBlockAt(x, y, z));
-			}
-		}
-		final Iterator<Block> it = blocks.iterator();
-		for (int delay = 1; delay <= (blocks.size() / MAX_BLOCKS_PER_TICK ) + 1; delay++) {
-			Bukkit.getScheduler().scheduleSyncDelayedTask(
-				arena.plugin,
-				new RegenLevel(arena, it),
-				delay
-			);
-		}
-	}
-
-	private class RegenLevel implements Runnable {
-
-		private Arena arena;
-		private Iterator<Block> it;
-		public RegenLevel(Arena arena, Iterator<Block> it) {
-			this.arena = arena;
-			this.it = it;
-		}
-
-		@SuppressWarnings("deprecation")
-		@Override
-		public void run() {
-			if (arena.getStatusManager().isArenaEnabled()) {
-				int curblocks = 0;
-				while (it.hasNext() && curblocks < MAX_BLOCKS_PER_TICK) {
-					randomCounter++;
-					if (randomCounter >= randomColorsArray.length) {
-						randomCounter = 0;
-					}
-					it.next().setTypeIdAndData(WOOL_ID, randomColorsArray[randomCounter], false);
-					curblocks++;
-				}
 			}
 		}
 	}
