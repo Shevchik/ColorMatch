@@ -51,7 +51,6 @@ public class GameLevel {
 
 	@SuppressWarnings("deprecation")
 	public void removeAllWoolExceptColor(DyeColor color) {
-		int id = Material.AIR.getId();
 		byte cd = color.getData();
 		int y = p1.getBlockY();
 		World world = getWorld();
