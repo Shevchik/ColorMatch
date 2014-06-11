@@ -30,6 +30,8 @@ import org.bukkit.block.Block;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.util.Vector;
 
+import colormatch.utils.SetBlockFast;
+
 public class GameLevel {
 
 	private Vector p1;
@@ -71,7 +73,7 @@ public class GameLevel {
 		byte cd = color.getData();
 		for (Block block : blocks) {
 			if (block.getData() != cd) {
-				block.setType(Material.AIR);
+				SetBlockFast.set(block, 0, (byte) 0);
 			}
 		}
 	}
@@ -86,14 +88,13 @@ public class GameLevel {
 		}
 	}
 	private int randomCounter = 0;
-	@SuppressWarnings("deprecation")
 	public void regen() {
 		for (Block block : blocks) {
 			randomCounter++;
 			if (randomCounter >= randomColorsArray.length) {
 				randomCounter = 0;
 			}
-			block.setTypeIdAndData(WOOL_ID, randomColorsArray[randomCounter], false);
+			SetBlockFast.set(block, WOOL_ID, randomColorsArray[randomCounter]);
 		}
 	}
 

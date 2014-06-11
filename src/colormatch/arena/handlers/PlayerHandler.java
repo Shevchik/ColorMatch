@@ -62,7 +62,7 @@ public class PlayerHandler {
 	public void spawnPlayer(final Player player, String msgtoplayer, String msgtoarenaplayers) {
 		arena.plugin.pdata.storePlayerLocation(player);
 		Vector s = arena.getStructureManager().getGameLevel().getSpawnPoint();
-		player.teleport(new Location(arena.getStructureManager().getGameLevel().getWorld(), s.getX()+8-random.nextInt(16), s.getY(), s.getZ()+8-random.nextInt(16)));
+		player.teleport(new Location(arena.getStructureManager().getGameLevel().getWorld(), s.getX()+8-random.nextInt(16), s.getY() + 1, s.getZ()+8-random.nextInt(16)));
 		player.updateInventory();
 		arena.plugin.pdata.storePlayerGameMode(player);
 		player.setFlying(false);
