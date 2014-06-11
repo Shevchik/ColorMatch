@@ -24,10 +24,9 @@ import org.bukkit.DyeColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
+import org.bukkit.block.Block;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.util.Vector;
-
-import colormatch.util.SetBlockFast;
 
 public class GameLevel {
 
@@ -58,8 +57,9 @@ public class GameLevel {
 		World world = getWorld();
 		for (int x = p1.getBlockX() + 1; x < p2.getBlockX(); x++) {
 			for (int z = p1.getBlockZ() + 1; z < p2.getBlockZ(); z++) {
-				if (world.getBlockAt(x, y, z).getData() != cd) {
-					SetBlockFast.setBlock(world, x, y, z, id, (byte) 0);
+				Block block = world.getBlockAt(x, y, z);
+				if (block.getData() != cd) {
+					block.setType(Material.AIR);
 				}
 			}
 		}
@@ -75,6 +75,7 @@ public class GameLevel {
 		}
 	}
 	private int randomCounter = 0;
+	@SuppressWarnings("deprecation")
 	public void regen() {
 		int y = p1.getBlockY();
 		World world = getWorld();
@@ -84,7 +85,7 @@ public class GameLevel {
 				if (randomCounter >= randomColorsArray.length) {
 					randomCounter = 0;
 				}
-				SetBlockFast.setBlock(world, x, y, z, WOOL_ID, randomColorsArray[randomCounter]);
+				world.getBlockAt(x, y, z).setTypeIdAndData(WOOL_ID, randomColorsArray[randomCounter], false);
 			}
 		}
 	}
