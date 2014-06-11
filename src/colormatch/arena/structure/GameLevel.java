@@ -101,11 +101,15 @@ public class GameLevel {
 	private int randomCounter = 0;
 	@SuppressWarnings("deprecation")
 	public void regenNow() {
-		Random rnd = new Random();
 		int y = p1.getBlockY();
+		World world = getWorld();
 		for (int x = p1.getBlockX() + 1; x < p2.getBlockX(); x++) {
 			for (int z = p1.getBlockZ() + 1; z < p2.getBlockZ(); z++) {
-				getWorld().getBlockAt(x, y, z).setTypeIdAndData(WOOL_ID, COLORS[rnd.nextInt(COLORS.length)], false);
+				randomCounter++;
+				if (randomCounter >= randomColorsArray.length) {
+					randomCounter = 0;
+				}
+				world.getBlockAt(x, y, z).setTypeIdAndData(WOOL_ID, randomColorsArray[randomCounter], false);
 			}
 		}
 	}

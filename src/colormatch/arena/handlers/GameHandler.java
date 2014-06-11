@@ -142,7 +142,7 @@ public class GameHandler {
 	public void stopArena() {
 		arena.getStatusManager().setRunning(false);
 		if (arena.getStatusManager().isArenaEnabled()) {
-			arena.getStructureManager().getGameLevel().regen(arena);
+			arena.getStructureManager().getGameLevel().regenNow();
 		}
 		roundtime = 10;
 	}
