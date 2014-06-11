@@ -17,8 +17,6 @@
 
 package colormatch.arena.structure;
 
-import java.util.Iterator;
-import java.util.LinkedList;
 import java.util.Random;
 
 import org.bukkit.Bukkit;
@@ -53,51 +51,18 @@ public class GameLevel {
 		regen();
 	}
 
-	private final int MAX_BLOCKS_PER_TICK = 100;
-
 	@SuppressWarnings("deprecation")
 	public void removeAllWoolExceptColor(final Arena arena, DyeColor color) {
 		int y = p1.getBlockY();
 		World world = getWorld();
-		LinkedList<Block> blocks = new LinkedList<Block>();
 		for (int x = p1.getBlockX() + 1; x < p2.getBlockX(); x++) {
 			for (int z = p1.getBlockZ() + 1; z < p2.getBlockZ(); z++) {
 				Block b = world.getBlockAt(x, y, z);
 				if (b.getData() != color.getData()) {
-					blocks.add(b);
+					b.setType(Material.AIR);
 				}
 			}
 		}
-		final Iterator<Block> it = blocks.iterator();
-		for (int delay = 1; delay <= (blocks.size() / MAX_BLOCKS_PER_TICK ) + 1; delay++) {
-			Bukkit.getScheduler().scheduleSyncDelayedTask(
-				arena.plugin,
-				new RemoveWool(arena, it),
-				delay
-			);
-		}
-	}
-
-	private class RemoveWool implements Runnable {
-
-		private Arena arena;
-		private Iterator<Block> it;
-		public RemoveWool(Arena arena, Iterator<Block> it) {
-			this.arena = arena;
-			this.it = it;
-		}
-
-		@Override
-		public void run() {
-			if (arena.getStatusManager().isArenaEnabled()) {
-				int curblocks = 0;
-				while (it.hasNext() && curblocks < MAX_BLOCKS_PER_TICK) {
-					it.next().setType(Material.AIR);
-					curblocks++;
-				}
-			}
-		}
-	
 	}
 
 	@SuppressWarnings("deprecation")
