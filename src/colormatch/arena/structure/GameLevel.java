@@ -58,10 +58,11 @@ public class GameLevel {
 	@SuppressWarnings("deprecation")
 	public void removeAllWoolExceptColor(final Arena arena, DyeColor color) {
 		int y = p1.getBlockY();
+		World world = getWorld();
 		LinkedList<Block> blocks = new LinkedList<Block>();
 		for (int x = p1.getBlockX() + 1; x < p2.getBlockX(); x++) {
 			for (int z = p1.getBlockZ() + 1; z < p2.getBlockZ(); z++) {
-				Block b = getWorld().getBlockAt(x, y, z);
+				Block b = world.getBlockAt(x, y, z);
 				if (b.getData() != color.getData()) {
 					blocks.add(b);
 				}
@@ -69,24 +70,34 @@ public class GameLevel {
 		}
 		final Iterator<Block> it = blocks.iterator();
 		for (int delay = 1; delay <= (blocks.size() / MAX_BLOCKS_PER_TICK ) + 1; delay++) {
-			Runnable removeWool = new Runnable() {
-				@Override
-				public void run() {
-					if (arena.getStatusManager().isArenaEnabled()) {
-						int curblocks = 0;
-						while (it.hasNext() && curblocks < MAX_BLOCKS_PER_TICK) {
-							it.next().setType(Material.AIR);
-							curblocks++;
-						}
-					}
-				}
-			};
 			Bukkit.getScheduler().scheduleSyncDelayedTask(
 				arena.plugin,
-				removeWool,
+				new RemoveWool(arena, it),
 				delay
 			);
 		}
+	}
+
+	private class RemoveWool implements Runnable {
+
+		private Arena arena;
+		private Iterator<Block> it;
+		public RemoveWool(Arena arena, Iterator<Block> it) {
+			this.arena = arena;
+			this.it = it;
+		}
+
+		@Override
+		public void run() {
+			if (arena.getStatusManager().isArenaEnabled()) {
+				int curblocks = 0;
+				while (it.hasNext() && curblocks < MAX_BLOCKS_PER_TICK) {
+					it.next().setType(Material.AIR);
+					curblocks++;
+				}
+			}
+		}
+	
 	}
 
 	@SuppressWarnings("deprecation")
@@ -115,36 +126,46 @@ public class GameLevel {
 	}
 	public void regen(final Arena arena) {
 		int y = p1.getBlockY();
+		World world = getWorld();
 		LinkedList<Block> blocks = new LinkedList<Block>();
 		for (int x = p1.getBlockX() + 1; x < p2.getBlockX(); x++) {
 			for (int z = p1.getBlockZ() + 1; z < p2.getBlockZ(); z++) {
-				blocks.add(getWorld().getBlockAt(x, y, z));
+				blocks.add(world.getBlockAt(x, y, z));
 			}
 		}
 		final Iterator<Block> it = blocks.iterator();
 		for (int delay = 1; delay <= (blocks.size() / MAX_BLOCKS_PER_TICK ) + 1; delay++) {
-			Runnable regenLevel = new Runnable() {
-				@SuppressWarnings("deprecation")
-				@Override
-				public void run() {
-					if (arena.getStatusManager().isArenaEnabled()) {
-						int curblocks = 0;
-						while (it.hasNext() && curblocks < MAX_BLOCKS_PER_TICK) {
-							randomCounter++;
-							if (randomCounter >= randomColorsArray.length) {
-								randomCounter = 0;
-							}
-							it.next().setTypeIdAndData(WOOL_ID, randomColorsArray[randomCounter], false);
-							curblocks++;
-						}
-					}
-				}
-			};
 			Bukkit.getScheduler().scheduleSyncDelayedTask(
 				arena.plugin,
-				regenLevel,
+				new RegenLevel(arena, it),
 				delay
 			);
+		}
+	}
+
+	private class RegenLevel implements Runnable {
+
+		private Arena arena;
+		private Iterator<Block> it;
+		public RegenLevel(Arena arena, Iterator<Block> it) {
+			this.arena = arena;
+			this.it = it;
+		}
+
+		@SuppressWarnings("deprecation")
+		@Override
+		public void run() {
+			if (arena.getStatusManager().isArenaEnabled()) {
+				int curblocks = 0;
+				while (it.hasNext() && curblocks < MAX_BLOCKS_PER_TICK) {
+					randomCounter++;
+					if (randomCounter >= randomColorsArray.length) {
+						randomCounter = 0;
+					}
+					it.next().setTypeIdAndData(WOOL_ID, randomColorsArray[randomCounter], false);
+					curblocks++;
+				}
+			}
 		}
 	}
 
