@@ -69,14 +69,9 @@ public class GameLevel {
 	@SuppressWarnings("deprecation")
 	public void removeAllWoolExceptColor(DyeColor color) {
 		byte cd = color.getData();
-		int y = p1.getBlockY();
-		World world = getWorld();
-		for (int x = p1.getBlockX() + 1; x < p2.getBlockX(); x++) {
-			for (int z = p1.getBlockZ() + 1; z < p2.getBlockZ(); z++) {
-				Block block = world.getBlockAt(x, y, z);
-				if (block.getData() != cd) {
-					block.setType(Material.AIR);
-				}
+		for (Block block : blocks) {
+			if (block.getData() != cd) {
+				block.setType(Material.AIR);
 			}
 		}
 	}
@@ -93,16 +88,12 @@ public class GameLevel {
 	private int randomCounter = 0;
 	@SuppressWarnings("deprecation")
 	public void regen() {
-		int y = p1.getBlockY();
-		World world = getWorld();
-		for (int x = p1.getBlockX() + 1; x < p2.getBlockX(); x++) {
-			for (int z = p1.getBlockZ() + 1; z < p2.getBlockZ(); z++) {
-				randomCounter++;
-				if (randomCounter >= randomColorsArray.length) {
-					randomCounter = 0;
-				}
-				world.getBlockAt(x, y, z).setTypeIdAndData(WOOL_ID, randomColorsArray[randomCounter], false);
+		for (Block block : blocks) {
+			randomCounter++;
+			if (randomCounter >= randomColorsArray.length) {
+				randomCounter = 0;
 			}
+			block.setTypeIdAndData(WOOL_ID, randomColorsArray[randomCounter], false);
 		}
 	}
 
