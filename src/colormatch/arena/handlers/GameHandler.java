@@ -98,7 +98,7 @@ public class GameHandler {
 			new Runnable() {
 				@Override
 				public void run() {
-					arena.getStructureManager().getGameLevel().removeAllWoolExceptColor(arena, currentcolor);
+					arena.getStructureManager().getGameLevel().removeAllWoolExceptColor(currentcolor);
 					Bukkit.getScheduler().scheduleSyncDelayedTask(
 						arena.plugin, new Runnable() {
 							@Override

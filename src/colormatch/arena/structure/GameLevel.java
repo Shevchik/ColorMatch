@@ -24,11 +24,9 @@ import org.bukkit.DyeColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
-import org.bukkit.block.Block;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.util.Vector;
 
-import colormatch.arena.Arena;
 import colormatch.util.SetBlockFast;
 
 public class GameLevel {
@@ -53,14 +51,14 @@ public class GameLevel {
 	}
 
 	@SuppressWarnings("deprecation")
-	public void removeAllWoolExceptColor(final Arena arena, DyeColor color) {
+	public void removeAllWoolExceptColor(DyeColor color) {
 		int id = Material.AIR.getId();
+		byte cd = color.getData();
 		int y = p1.getBlockY();
 		World world = getWorld();
 		for (int x = p1.getBlockX() + 1; x < p2.getBlockX(); x++) {
 			for (int z = p1.getBlockZ() + 1; z < p2.getBlockZ(); z++) {
-				Block b = world.getBlockAt(x, y, z);
-				if (b.getData() != color.getData()) {
+				if (world.getBlockAt(x, y, z).getData() != cd) {
 					SetBlockFast.setBlock(world, x, y, z, id, (byte) 0);
 				}
 			}
