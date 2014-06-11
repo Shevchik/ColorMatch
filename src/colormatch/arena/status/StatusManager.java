@@ -37,11 +37,9 @@ public class StatusManager {
 	}
 
 	public boolean enableArena() {
-		if (arena.getStructureManager().isArenaConfigured()) {
+		if (arena.getStructureManager().isArenaConfigured() && arena.getStructureManager().getGameLevel().getWorld() != null) {
 			enabled = true;
-			if (arena.getStructureManager().getGameLevel().getSpawnPoint() != null) {
-				arena.getStructureManager().getGameLevel().cacheBlocks();
-			}
+			arena.getStructureManager().getGameLevel().cacheBlocks();
 			return true;
 		}
 		return false;
