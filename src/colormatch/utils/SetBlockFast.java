@@ -35,7 +35,7 @@ public class SetBlockFast {
 				cs = new ChunkSection(block.getY() >> 4 << 4, !c.world.worldProvider.o());
 				c.getSections()[block.getY() >> 4] = cs;
 			}
-			cs.setType(block.getX() & 0xF, block.getY() & 0xF, block.getZ() & 0xF, Block.getByCombinedId(id << 4 | data));
+			cs.setType(block.getX() & 0xF, block.getY() & 0xF, block.getZ() & 0xF, Block.getByCombinedId(data << 12 | id));
 			c.world.notify(new BlockPosition(block.getX(), block.getY(), block.getZ()));
 		} catch (Throwable t) {
 			block.setTypeIdAndData(id, data, false);
