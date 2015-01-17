@@ -29,14 +29,14 @@ public class SetBlockFast {
 	@SuppressWarnings("deprecation")
 	public static void set(org.bukkit.block.Block block, int id, byte data) {
 		try {
-			Chunk c = ((CraftChunk) block.getChunk()).getHandle();
-			ChunkSection cs = c.getSections()[block.getY() >> 4];
-			if (cs == null) {
-				cs = new ChunkSection(block.getY() >> 4 << 4, !c.world.worldProvider.o());
-				c.getSections()[block.getY() >> 4] = cs;
+			Chunk chunk = ((CraftChunk) block.getChunk()).getHandle();
+			ChunkSection section = chunk.getSections()[block.getY() >> 4];
+			if (section == null) {
+				section = new ChunkSection(block.getY() >> 4 << 4, !chunk.world.worldProvider.o());
+				chunk.getSections()[block.getY() >> 4] = section;
 			}
-			cs.setType(block.getX() & 0xF, block.getY() & 0xF, block.getZ() & 0xF, Block.getByCombinedId(data << 12 | id));
-			c.world.notify(new BlockPosition(block.getX(), block.getY(), block.getZ()));
+			section.setType(block.getX() & 0xF, block.getY() & 0xF, block.getZ() & 0xF, Block.getByCombinedId(data << 12 | id));
+			chunk.world.notify(new BlockPosition(block.getX(), block.getY(), block.getZ()));
 		} catch (Throwable t) {
 			block.setTypeIdAndData(id, data, false);
 		}
