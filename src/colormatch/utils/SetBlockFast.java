@@ -17,11 +17,12 @@
 
 package colormatch.utils;
 
-import net.minecraft.server.v1_7_R4.Block;
-import net.minecraft.server.v1_7_R4.Chunk;
-import net.minecraft.server.v1_7_R4.ChunkSection;
+import net.minecraft.server.v1_8_R1.Block;
+import net.minecraft.server.v1_8_R1.BlockPosition;
+import net.minecraft.server.v1_8_R1.Chunk;
+import net.minecraft.server.v1_8_R1.ChunkSection;
 
-import org.bukkit.craftbukkit.v1_7_R4.CraftChunk;
+import org.bukkit.craftbukkit.v1_8_R1.CraftChunk;
 
 public class SetBlockFast {
 
@@ -31,12 +32,11 @@ public class SetBlockFast {
 			Chunk c = ((CraftChunk) block.getChunk()).getHandle();
 			ChunkSection cs = c.getSections()[block.getY() >> 4];
 			if (cs == null) {
-				cs = new ChunkSection(block.getY() >> 4 << 4, !c.world.worldProvider.g);
+				cs = new ChunkSection(block.getY() >> 4 << 4, !c.world.worldProvider.o());
 				c.getSections()[block.getY() >> 4] = cs;
 			}
-			cs.setTypeId(block.getX() & 0xF, block.getY() & 0xF, block.getZ() & 0xF, Block.getById(id));
-			cs.setData(block.getX() & 0xF, block.getY() & 0xF, block.getZ() & 0xF, data);
-			c.world.notify(block.getX(), block.getY(), block.getZ());
+			cs.setType(block.getX() & 0xF, block.getY() & 0xF, block.getZ() & 0xF, Block.getByCombinedId(id << 4 | data));
+			c.world.notify(new BlockPosition(block.getX(), block.getY(), block.getZ()));
 		} catch (Throwable t) {
 			block.setTypeIdAndData(id, data, false);
 		}

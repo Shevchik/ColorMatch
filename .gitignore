@@ -7,3 +7,4 @@ bin
 *.zip
 .externalToolBuilders
 target
+libs/spigot.jar

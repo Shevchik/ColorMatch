@@ -29,7 +29,6 @@ import colormatch.datahandler.PlayerDataStore;
 import colormatch.eventhandler.PlayerLeaveArenaChecker;
 import colormatch.eventhandler.PlayerStatusHandler;
 import colormatch.eventhandler.RestrictionHandler;
-import colormatch.eventhandler.WorldHandler;
 
 public class ColorMatch extends JavaPlugin {
 
@@ -45,7 +44,6 @@ public class ColorMatch extends JavaPlugin {
 		getServer().getPluginManager().registerEvents(new PlayerStatusHandler(this), this);
 		getServer().getPluginManager().registerEvents(new RestrictionHandler(this), this);
 		getServer().getPluginManager().registerEvents(new PlayerLeaveArenaChecker(this), this);
-		getServer().getPluginManager().registerEvents(new WorldHandler(this), this);
 		final File arenasfolder = new File(this.getDataFolder() + File.separator + "arenas");
 		arenasfolder.mkdirs();
 		final ColorMatch instance = this;

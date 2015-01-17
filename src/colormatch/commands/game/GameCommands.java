@@ -45,17 +45,17 @@ public class GameCommands implements CommandExecutor {
 			if (arena != null) {
 				boolean canJoin = arena.getPlayerHandler().checkJoin(player);
 				if (canJoin) {
-					arena.getPlayerHandler().spawnPlayer(player, "You joined the arena", "Player "+player.getName()+" joined the arena");
+					arena.getPlayerHandler().spawnPlayer(player, "Вы присоединилсь к игре", "Player "+player.getName()+" присоединился к игре");
 				}
 				return true;
 			} else {
-				sender.sendMessage("Arena does not exist");
+				sender.sendMessage("Арена не существует");
 				return true;
 			}
 		} else if (args.length == 1 && args[0].equalsIgnoreCase("leave")) {
 			Arena arena = plugin.amanager.getPlayerArena(player.getName());
 			if (arena != null) {
-				arena.getPlayerHandler().leavePlayer(player, "You left the arena", "Player "+player.getName()+" left the aren");
+				arena.getPlayerHandler().leavePlayer(player, "Вы покинули игру", "Player "+player.getName()+" покинул игру");
 				return true;
 			} else {
 				sender.sendMessage("You are not in arena");

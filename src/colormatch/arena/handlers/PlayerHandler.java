@@ -24,6 +24,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
 
 import colormatch.arena.Arena;
+import colormatch.arena.bars.Bars;
 
 public class PlayerHandler {
 
@@ -58,7 +59,6 @@ public class PlayerHandler {
 	}
 
 	Random random = new Random();
-	@SuppressWarnings("deprecation")
 	public void spawnPlayer(final Player player, String msgtoplayer, String msgtoarenaplayers) {
 		arena.plugin.pdata.storePlayerLocation(player);
 		Vector s = arena.getStructureManager().getGameLevel().getSpawnPoint();
@@ -80,6 +80,9 @@ public class PlayerHandler {
 			}
 		}
 		arena.getPlayersManager().addPlayerToArena(player.getName());
+		for (Player oplayer : arena.getPlayersManager().getPlayersInArena()) {
+			Bars.setBar(oplayer, Bars.waiting, arena.getPlayersManager().getPlayersCount(), 0, arena.getPlayersManager().getPlayersCount() * 100 / arena.getStructureManager().getMinPlayers());
+		}
 		if (!arena.getStatusManager().isArenaStarting() && arena.getPlayersManager().getPlayersCount() == arena.getStructureManager().getMinPlayers()) {
 			arena.getGameHandler().runArenaCountdown();
 		}
@@ -94,6 +97,9 @@ public class PlayerHandler {
 		if (!msgtoarenaplayers.isEmpty()) {
 			for (Player oplayer : arena.getPlayersManager().getPlayersInArena()) {
 				oplayer.sendMessage(msgtoarenaplayers);
+				if (!arena.getStatusManager().isArenaStarting() && !arena.getStatusManager().isArenaRunning()) {
+					Bars.setBar(oplayer, Bars.waiting, arena.getPlayersManager().getPlayersCount(), 0, arena.getPlayersManager().getPlayersCount() * 100 / arena.getStructureManager().getMinPlayers());
+				}
 			}
 		}
 	}
@@ -105,8 +111,8 @@ public class PlayerHandler {
 		}
 	}
 
-	@SuppressWarnings("deprecation")
 	private void removePlayerFromArenaAndRestoreState(Player player, boolean winner) {
+		Bars.removeBar(player);
 		arena.getPlayersManager().removePlayerFromArena(player.getName());
 		arena.plugin.pdata.restorePlayerHunger(player);
 		arena.plugin.pdata.restorePlayerPotionEffects(player);

@@ -71,8 +71,7 @@ public class Rewards {
 			if (player.getInventory().firstEmpty() != -1) {
 				player.getInventory().addItem(reward);
 			} else {
-				player.getWorld().dropItemNaturally(player.getLocation(),
-						reward);
+				player.getWorld().dropItemNaturally(player.getLocation(), reward);
 			}
 		}
 		if (moneyreward != 0) {

@@ -79,7 +79,7 @@ public class GameLevel {
 	}
 
 	@SuppressWarnings("deprecation")
-	private final int WOOL_ID = Material.WOOL.getId();
+	private final int CLAY_ID = Material.STAINED_CLAY.getId();
 	private final byte[] randomColorsArray = new byte[7100]; {
 		byte[] COLORS = new byte[] {0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15};
 		Random rnd = new Random();
@@ -94,7 +94,7 @@ public class GameLevel {
 			if (randomCounter >= randomColorsArray.length) {
 				randomCounter = 0;
 			}
-			SetBlockFast.set(block, WOOL_ID, randomColorsArray[randomCounter]);
+			SetBlockFast.set(block, CLAY_ID, randomColorsArray[randomCounter]);
 		}
 	}
 

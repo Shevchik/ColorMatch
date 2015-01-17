@@ -22,10 +22,12 @@ import java.util.Random;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.DyeColor;
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
-import org.bukkit.material.Wool;
+import org.bukkit.inventory.ItemStack;
 
 import colormatch.arena.Arena;
+import colormatch.arena.bars.Bars;
 
 public class GameHandler {
 
@@ -52,7 +54,8 @@ public class GameHandler {
 						startArena();
 					} else {
 						for (Player player : arena.getPlayersManager().getPlayersInArena()) {
-							player.sendMessage("Areans starts in: "+count);
+							player.sendMessage(ChatColor.GOLD+"Игра начнётся через: "+count);
+							Bars.setBar(player, Bars.starting, count, count, count * 10);
 						}
 						count--;
 					}
@@ -71,7 +74,7 @@ public class GameHandler {
 	public void startArena() {
 		arena.getStatusManager().setRunning(true);
 		for (Player player : arena.getPlayersManager().getPlayersInArena()) {
-			player.sendMessage("Game started");
+			player.sendMessage(ChatColor.GOLD+"Игра началась");
 		}
 		startRound();
 	}
@@ -84,15 +87,15 @@ public class GameHandler {
 	private void startRound() {
 		if (roundtime <= 0) {
 			for (Player player : arena.getPlayersManager().getPlayersInArena()) {
-				arena.getPlayerHandler().leavePlayer(player, "Time out", "");
+				arena.getPlayerHandler().leavePlayer(player, ChatColor.GOLD+"Время вышло", "");
 			}
 			stopArena();
 		}
 		currentcolor = colors[rnd.nextInt(colors.length)];
 		for (Player player : arena.getPlayersManager().getPlayersInArena()) {
-			player.getInventory().setItem(0, new Wool(currentcolor).toItemStack());
+			player.getInventory().setItem(0, new ItemStack(Material.STAINED_CLAY, 1, currentcolor.getDyeData()));
 			player.updateInventory();
-			player.sendMessage("You have "+roundtime+" seconds to pick the safe position");
+			player.sendMessage(ChatColor.GOLD+"У вас есть "+roundtime+" секунд для нахождения безопасной позиции");
 		}
 		Bukkit.getScheduler().scheduleSyncDelayedTask(arena.plugin,
 			new Runnable() {
@@ -105,12 +108,12 @@ public class GameHandler {
 							public void run() {
 								for (Player player : arena.getPlayersManager().getPlayersInArena()) {
 									if (arena.getStructureManager().getGameLevel().getSpawnPoint().getBlockY() - player.getLocation().getBlockY() > 2) {
-										arena.getPlayerHandler().leavePlayer(player, "You fell", player.getName() + " fell");
+										arena.getPlayerHandler().leavePlayer(player, ChatColor.GOLD+"Вы упали", player.getName() + " упал");
 									}
 								}
 								if (arena.getPlayersManager().getPlayersCount() == 1) {
 									Player player = arena.getPlayersManager().getPlayersInArena().iterator().next();
-									arena.getPlayerHandler().leaveWinner(player, "You won the arena");
+									arena.getPlayerHandler().leaveWinner(player, ChatColor.GOLD+"Вы выиграли");
 									broadcastWin(player);
 									stopArena();
 									return;
@@ -121,6 +124,9 @@ public class GameHandler {
 								}
 								roundtime -= 1;
 								arena.getStructureManager().getGameLevel().regen();
+								for (Player player : arena.getPlayersManager().getPlayersInArena()) {
+									Bars.setBar(player, Bars.playing, arena.getPlayersManager().getPlayersCount(), 0, 100);
+								}
 								startRound();
 							}
 						}, 60
@@ -139,7 +145,7 @@ public class GameHandler {
 	}
 
 	private void broadcastWin(Player player) {
-		Bukkit.broadcastMessage(ChatColor.translateAlternateColorCodes('&', "&9[ColorShuffleMatch] &a"+player.getName()+"&r won the game on arena &c"+arena.getArenaName()));
+		Bukkit.broadcastMessage(ChatColor.translateAlternateColorCodes('&', "&9[ColorShuffleMatch] &a"+player.getName()+"&r выиграл игру на арене &c"+arena.getArenaName()));
 	}
 
 }
