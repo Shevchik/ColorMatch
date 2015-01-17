@@ -21,7 +21,6 @@ import java.util.Random;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
-import org.bukkit.DyeColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -81,9 +80,6 @@ public class GameHandler {
 
 	private int roundtime = 10;
 	private Random rnd = new Random();
-	private DyeColor[] colors = DyeColor.values();
-	private DyeColor currentcolor;
-	@SuppressWarnings("deprecation")
 	private void startRound() {
 		if (roundtime <= 0) {
 			for (Player player : arena.getPlayersManager().getPlayersInArena()) {
@@ -91,11 +87,12 @@ public class GameHandler {
 			}
 			stopArena();
 		}
-		currentcolor = colors[rnd.nextInt(colors.length)];
+		final byte currentcolor = (byte) rnd.nextInt(16);
 		for (Player player : arena.getPlayersManager().getPlayersInArena()) {
-			player.getInventory().setItem(0, new ItemStack(Material.STAINED_CLAY, 1, currentcolor.getDyeData()));
+			player.getInventory().setItem(0, new ItemStack(Material.STAINED_CLAY, 1, currentcolor));
 			player.updateInventory();
 			player.sendMessage(ChatColor.GOLD+"У вас есть "+roundtime+" секунд для нахождения безопасной позиции");
+			Bars.setBar(player, Bars.playing, arena.getPlayersManager().getPlayersCount(), 0, 100);
 		}
 		Bukkit.getScheduler().scheduleSyncDelayedTask(arena.plugin,
 			new Runnable() {
@@ -124,9 +121,6 @@ public class GameHandler {
 								}
 								roundtime -= 1;
 								arena.getStructureManager().getGameLevel().regen();
-								for (Player player : arena.getPlayersManager().getPlayersInArena()) {
-									Bars.setBar(player, Bars.playing, arena.getPlayersManager().getPlayersCount(), 0, 100);
-								}
 								startRound();
 							}
 						}, 60

@@ -22,7 +22,6 @@ import java.util.List;
 import java.util.Random;
 
 import org.bukkit.Bukkit;
-import org.bukkit.DyeColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
@@ -69,8 +68,7 @@ public class GameLevel {
 	}
 
 	@SuppressWarnings("deprecation")
-	public void removeAllWoolExceptColor(DyeColor color) {
-		byte cd = color.getData();
+	public void removeAllWoolExceptColor(byte cd) {
 		for (Block block : blocks) {
 			if (block.getData() != cd) {
 				SetBlockFast.set(block, 0, (byte) 0);
