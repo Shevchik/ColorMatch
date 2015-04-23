@@ -17,12 +17,12 @@
 
 package colormatch.utils;
 
-import net.minecraft.server.v1_8_R1.Block;
-import net.minecraft.server.v1_8_R1.BlockPosition;
-import net.minecraft.server.v1_8_R1.Chunk;
-import net.minecraft.server.v1_8_R1.ChunkSection;
+import net.minecraft.server.v1_8_R2.Block;
+import net.minecraft.server.v1_8_R2.BlockPosition;
+import net.minecraft.server.v1_8_R2.Chunk;
+import net.minecraft.server.v1_8_R2.ChunkSection;
 
-import org.bukkit.craftbukkit.v1_8_R1.CraftChunk;
+import org.bukkit.craftbukkit.v1_8_R2.CraftChunk;
 
 public class SetBlockFast {
 
