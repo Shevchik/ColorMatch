@@ -71,7 +71,7 @@ public class RestrictionHandler implements Listener {
 
 
 	@EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
-	public void onPlayerBlockPlayer(BlockPlaceEvent e) {
+	public void onPlayerBlockPlace(BlockPlaceEvent e) {
 		Player player = e.getPlayer();
 		Arena arena = plugin.amanager.getPlayerArena(player.getName());
 		if (arena == null) {

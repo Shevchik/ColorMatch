@@ -40,14 +40,14 @@ public class PlayerStatusHandler implements Listener {
 		if (e.getEntity() instanceof Player) {
 			Player player = (Player) e.getEntity();
 			if (plugin.amanager.getPlayerArena(player.getName()) != null) {
-				e.setDamage(0.0);
+				e.setDamage(0);
 			}
 		}
 	}
 
 
 	@EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
-	public void onPlayerDamage(FoodLevelChangeEvent e) {
+	public void onPlayerFoodLevelChange(FoodLevelChangeEvent e) {
 		if (e.getEntity() instanceof Player) {
 			Player player = (Player) e.getEntity();
 			if (plugin.amanager.getPlayerArena(player.getName()) != null) {
