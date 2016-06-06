@@ -17,11 +17,14 @@
 
 package colormatch.arena.bars;
 
-import me.confuser.barapi.BarAPI;
+import java.util.HashMap;
 
 import org.bukkit.Bukkit;
-import org.bukkit.entity.Player;
 import org.bukkit.ChatColor;
+import org.bukkit.boss.BarColor;
+import org.bukkit.boss.BarStyle;
+import org.bukkit.boss.BossBar;
+import org.bukkit.entity.Player;
 
 public class Bars {
 
@@ -29,15 +32,22 @@ public class Bars {
 	public static String starting = "&6Игра начнётся через :&r {SECONDS} секунд";
 	public static String playing = "&6Игроков в игре:&r {COUNT}";
 
+	private static final HashMap<Player, BossBar> bossbars = new HashMap<Player, BossBar>();
+
 	public static void setBar(Player player, String message, int count, int seconds, float percent) {
 		try {
 			message = message.replace("{COUNT}", String.valueOf(count));
 			message = message.replace("{SECONDS}", String.valueOf(seconds));
 			message = ChatColor.translateAlternateColorCodes('&', message);
-			if (Bukkit.getPluginManager().getPlugin("BarAPI") != null) {
-				if (!message.equals("")) {
-					BarAPI.setMessage(player, message, percent);
-				}
+			BossBar bar = bossbars.get(player);
+			if (bar == null) {
+				bar = Bukkit.createBossBar(message, BarColor.PINK, BarStyle.SOLID);
+				bar.setProgress(percent / 100.0F);
+				bar.addPlayer(player);
+				bossbars.put(player, bar);
+			} else {
+				bar.setTitle(message);
+				bar.setProgress(percent / 100.0F);
 			}
 		} catch (Throwable t) {
 		}
@@ -45,8 +55,9 @@ public class Bars {
 
 	public static void removeBar(Player player) {
 		try {
-			if (Bukkit.getPluginManager().getPlugin("BarAPI") != null) {
-				BarAPI.removeBar(player);
+			BossBar bar = bossbars.remove(player);
+			if (bar != null) {
+				bar.removePlayer(player);
 			}
 		} catch (Throwable t) {
 		}

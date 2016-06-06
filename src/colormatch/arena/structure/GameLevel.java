@@ -29,8 +29,6 @@ import org.bukkit.block.Block;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.util.Vector;
 
-import colormatch.utils.SetBlockFast;
-
 public class GameLevel {
 
 	private Vector p1;
@@ -71,28 +69,31 @@ public class GameLevel {
 	public void removeAllWoolExceptColor(byte cd) {
 		for (Block block : blocks) {
 			if (block.getData() != cd) {
-				SetBlockFast.set(block, 0, (byte) 0);
+				block.setTypeIdAndData(0, (byte) 0, false);
 			}
 		}
 	}
 
 	@SuppressWarnings("deprecation")
 	private final int CLAY_ID = Material.STAINED_CLAY.getId();
-	private final byte[] randomColorsArray = new byte[7100]; {
-		byte[] COLORS = new byte[] {0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15};
+	private final byte[] randomColorsArray = new byte[7100];
+	{
+		byte[] colors = new byte[] {0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15};
 		Random rnd = new Random();
 		for (int i = 0; i < randomColorsArray.length; i++) {
-			randomColorsArray[i] = COLORS[rnd.nextInt(COLORS.length)];
+			randomColorsArray[i] = colors[rnd.nextInt(colors.length)];
 		}
 	}
+
 	private int randomCounter = 0;
+	@SuppressWarnings("deprecation")
 	public void regen() {
 		for (Block block : blocks) {
 			randomCounter++;
 			if (randomCounter >= randomColorsArray.length) {
 				randomCounter = 0;
 			}
-			SetBlockFast.set(block, CLAY_ID, randomColorsArray[randomCounter]);
+			block.setTypeIdAndData(CLAY_ID, randomColorsArray[randomCounter], false);
 		}
 	}
 
